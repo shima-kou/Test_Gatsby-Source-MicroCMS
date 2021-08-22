@@ -5,6 +5,13 @@ import Layout from "../components/layout"
 import Hero from "../components/Hero"
 import PostLink from "../components/post-link"
 
+import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
+import timezone from "dayjs/plugin/timezone"
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
 const IndexPage = ({ data }) => {
   return (
     <Layout>
@@ -15,7 +22,7 @@ const IndexPage = ({ data }) => {
           postId={node.informationId}
           postTitle={node.title}
           postBody={node.body}
-          postDate={node.date}
+          postDate={dayjs.utc(node.date).tz("Asia/Tokyo").format("YYYY-MM-DD")}
         />
       ))}
     </Layout>
@@ -30,7 +37,7 @@ export const query = graphql`
       edges {
         node {
           body
-          date(formatString: "YYYY.DD.MM")
+          date
           informationId
           publishedAt
           title
